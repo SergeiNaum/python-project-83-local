@@ -5,6 +5,7 @@ dist/
 *.pyc
 .venv/
 TODO
+.env
 .coverage
 coverage.xml
 .pytest_cache/

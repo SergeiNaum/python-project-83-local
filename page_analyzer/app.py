@@ -1,7 +1,6 @@
 import os
 
 import psycopg2
-from dotenv import load_dotenv
 from flask import (
     Flask,
     render_template,
@@ -12,7 +11,6 @@ from flask import (
 )
 from . import db_new, web_utils
 
-load_dotenv()
 
 app = Flask(__name__)
 
