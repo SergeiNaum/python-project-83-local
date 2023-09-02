@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "python-project-83-local"
+version = "0.1.0"
+description = "Page_Analizer"
+authors = ["Naumenko_Sergey <sergei.naumencko@yandex.ru>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "Page_Analizer"}]
+
+[tool.poetry.dependencies]
+python = "3.11.3"
+flask = "^2.3.3"
+gunicorn = "^21.2.0"
+psycopg2-binary = "^2.9.5"
+requests = "^2.31.0"
+validators = "^0.21.2"
+beautifulsoup4 = "^4.12.2"
+python-dotenv = "^1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

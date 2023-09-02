@@ -1,0 +1,14 @@
+# created by virtualenv automatically
+*.egg-info
+__pycache__
+dist/
+*.pyc
+.venv/
+TODO
+.coverage
+coverage.xml
+.pytest_cache/
+.idea
+.git
+cover
+*,cover
