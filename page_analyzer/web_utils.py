@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 from validators.url import url as is_correct_url
 
 
-def validate_url(url: str):
+def validate_url(url: str) -> list:
     errors = []
     if len(url) > 255:
         error = 'URL превышает 255 символов'
@@ -15,6 +15,7 @@ def validate_url(url: str):
     elif not is_correct_url(url):
         error = 'URL не прошел валидацию'
         errors.append(error)
+    return errors
 
 
 def get_normalyze_url(url: str) -> str:
@@ -31,7 +32,7 @@ def get_status_code_by_url(url: str) -> int:
         return 0
 
 
-def get_tags_data(url_name):
+def get_tags_data(url_name: str) -> dict:
     h1 = ''
     title = ''
     description = ''
