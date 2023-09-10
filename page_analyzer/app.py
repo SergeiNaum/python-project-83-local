@@ -6,15 +6,40 @@ from flask import (
     request,
     flash,
     redirect,
-    url_for
+    url_for,
+    g
 )
 
 from . import db, web_utils
 
 app = Flask(__name__)
 
-app.database_url = os.getenv('DATABASE_URL')
+
 app.secret_key = os.getenv('SECRET_KEY')
+
+
+def get_db():
+    '''Соединение с БД, если оно еще не установлено'''
+    if not hasattr(g, 'link_db'):
+        g.link_db = db.FDataBase().get_connected()
+    return g.link_db
+
+
+dbase = None
+
+
+@app.before_request
+def before_request():
+    """Установление соединения с БД перед выполнением запроса"""
+    global dbase
+    dbase = db.FDataBase()
+
+
+@app.teardown_appcontext
+def close_db(error):
+    '''Закрываем соединение с БД, если оно было установлено'''
+    if hasattr(g, 'link_db'):
+        g.link_db.close()
 
 
 def get_redirect_to_url_details_page(id):
@@ -29,7 +54,6 @@ def index():
 
 @app.get('/urls')
 def urls_show():
-    dbase = db.FDataBase()
     data = dbase.get_urls_and_last_checks_data()
 
     return render_template('urls/index.html', data=data)
@@ -37,7 +61,6 @@ def urls_show():
 
 @app.post('/urls')
 def post_url():
-    dbase = db.FDataBase()
     url_name = request.form.get('url')
     errors = web_utils.validate_url(url_name)
 
@@ -63,7 +86,6 @@ def post_url():
 
 @app.get('/urls/<int:id>')
 def get_url_details(id):
-    dbase = db.FDataBase()
     return render_template('urls/url.html', url=dbase.get_url_by_id(id),
                            url_checks=dbase.get_url_checks_by_url_id(id),
                            messages=get_flashed_messages(with_categories=True), )
@@ -71,7 +93,6 @@ def get_url_details(id):
 
 @app.post('/urls/<int:id>/checks')
 def post_url_check(id):
-    dbase = db.FDataBase()
     url = dbase.get_url_by_id(id)
     status_code = web_utils.get_status_code_by_url(url.name)
 
